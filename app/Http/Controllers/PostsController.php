@@ -67,9 +67,9 @@ class PostsController extends Controller
         $post->content = $request->input('content');
         $post->update_users_id = $user->id;
         $post->save();
-        
+        $msg = $id ? "updte blog post" : "save blog post";
         return redirect('blogs')
-                ->with('success','You have been successfully update data');
+                ->with('success','You have been successfully '.$msg);
 
     }
     
@@ -84,7 +84,7 @@ class PostsController extends Controller
                                 ->delete();
         
         return redirect('blogs')
-                ->with('success','You have been successfully deleted data');
+                ->with('success','You have been successfully deleted blog post');
 
     }
     
