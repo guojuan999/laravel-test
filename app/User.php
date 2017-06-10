@@ -23,6 +23,11 @@ class User extends \Eloquent implements
     use Authenticatable, Authorizable, CanResetPassword;
     use Notifiable;
     use HybridRelations;
+    
+    /**
+     * The name of the database connection to use.
+     * @var string
+    ]*/
     protected $connection = 'mysql';
 
     /**
