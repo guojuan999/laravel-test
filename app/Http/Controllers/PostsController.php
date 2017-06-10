@@ -42,7 +42,8 @@ class PostsController extends Controller
     public function getBlogById($id)
     {
         $post = BlogPost::where('_id', '=', $id)->firstOrFail();
-        return view('blogs/view' , ['post' => $post]);
+        $user = User::where('id', '=', $post->users_id)->firstOrFail();
+        return view('blogs/view' , ['post' => $post, 'user'=>$user]);
     }
     
     /**

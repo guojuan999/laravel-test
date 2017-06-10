@@ -22,14 +22,14 @@
 
                 <div class="panel-body">
                     <label>Blog Title</label>
-                    <input type="text" name="title" class="form-control" value="<?php echo htmlentities($post->title);?>" />
+                    <input type="text" name="title" class="form-control" value="{{$post->title}}" />
                     @if ($errors->has('title'))
                         <span class="help-block">
                             <strong>{{ $errors->first('title') }}</strong>
                         </span>
                     @endif
                     <label>Blog Content</label>
-                    <textarea class="form-control" name="content"><?php echo htmlentities($post->content); ?></textarea>
+                    <textarea class="form-control" name="content">{{$post->content}}</textarea>
                     @if ($errors->has('content'))
                         <span class="help-block">
                             <strong>{{ $errors->first('content') }}</strong>

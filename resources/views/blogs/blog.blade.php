@@ -35,10 +35,10 @@
                                 <tr>
                                     <td><?php echo (isset($users[$post->users_id]) ? $users[$post->users_id]->name: ""); ?></td>
                                     <td>
-                                        <a href="/blogs/{{$post->_id}}"><?php echo htmlentities($post->title); ?></a>
+                                        <a href="/blogs/{{$post->_id}}">{{$post->title}}</a>
                                     </td>
                                     @if ($isAdmin)
-                                    <td><a href="/blogs/delete/{{$post->_id}}">Delete</a>&nbsp;<a href="/blogs/edit/{{$post->_id}}">Edit</a></td>
+                                    <td><a class="btn-link" href="/blogs/delete/{{$post->_id}}">Delete</a>&nbsp;&nbsp;<a class="btn-link" href="/blogs/edit/{{$post->_id}}">Edit</a></td>
                                     @endif
                                 </tr>
                                 @endforeach
