@@ -34,6 +34,6 @@ class CreateBlogPostsConnection extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('blog_posts');
     }
 }
