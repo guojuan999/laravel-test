@@ -11,7 +11,7 @@ Note: before running migration, please add database 'blog' at mysql and mongodb
 2.2 php artisan serve
 
 There are 2 users has been added in migration :
-user : juan@google.com
+user : juan@gmail.com
 password:  test1234
 role: admin
 Admin user could add/edit/read/delete any blog post
