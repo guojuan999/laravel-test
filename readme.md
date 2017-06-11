@@ -21,3 +21,5 @@
 <p>role:user</p>
 
 <p>the normal user can only read blog posts but can be registered.</p>
+
+There are some tests cases for User and Blog Posts at tests/Unit/UserTest.php and tests/Unit/BlogPostTest.php

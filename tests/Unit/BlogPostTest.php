@@ -17,7 +17,10 @@ class BlogPostTest extends TestCase
     public function testExample()
     {
         $blogpost = BlogPost::where('user_id', '=', 1)->firstOrFail();
+        $title = $blogpost->getTitle();
+        $this->assertTrue(strlen($title) > 0);
         $user = $blogpost->user()->firstorFail();
         $this->assertTrue($user->hasRole("admin"));
+        
     }
 }
