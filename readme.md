@@ -10,14 +10,14 @@ Note: before running migration, please add database 'blog' at mysql and mongodb
 2.1 php artisan migrate
 2.2 php artisan serve
 
-There are 2 users has been added in migration :
-user : juan@gmail.com
-password:  test1234
-role: admin
-Admin user could add/edit/read/delete any blog post
+<p>There are 2 users has been added in migration :</p>
+<p>user : juan@gmail.com</p>
+<p>password:  test1234</p>
+<p>role: admin</p>
+<p>Admin user could add/edit/read/delete any blog post</p>
 
-user: test@test.com
-password: test1234
-role:user
+<p>user: test@test.com</p>
+<p>password: test1234</p>
+<p>role:user</p>
 
-the normal user can only read blog posts but can be registered.
+<p>the normal user can only read blog posts but can be registered.</p>
