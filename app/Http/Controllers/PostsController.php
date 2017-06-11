@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
 use App\BlogPost;
 use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
-    const limit = 5;
+    /**
+     * pagingation per page for displaying blogs 
+     */
+    const pageLimit = 5;
     
     /**
-     * get all App/Message by pagination
+     * get all App/BlogPost by pagination
      * @param int $page
      */
     public function getBlogs()
@@ -20,41 +22,36 @@ class PostsController extends Controller
         if(!Auth::check()) {
             return redirect('/');
         }
-        $m = new BlogPost();
-        $posts = BlogPost::paginate(self::limit);
-        $userIds = array();
-        foreach ($posts as $post) {
-            $userIds[] = $post->users_id;
-        }
-        $users = User::findMany(array_unique($userIds));
-        $usersById = array();
-        foreach($users as $user){
-            $usersById[$user->id] = $user;
-        }
-        $currentUser = Auth::user();
-        return view('blogs/blog' , ['posts' => $posts, 'users'=>$usersById,'isAdmin' =>(boolean)$currentUser->is_admin]);
+        $posts = BlogPost::orderBy('created_at', 'desc')->paginate(self::pageLimit);
+        return view('blogs/blog' , ['posts' => $posts]);
     }
     
     /**
-     * get App/Message by id
+     * get App/BlogPost by id
      * @param string $id
      */
     public function getBlogById($id)
     {
+        if(!Auth::check()) {
+            return redirect('/');
+        }
         $post = BlogPost::where('_id', '=', $id)->firstOrFail();
-        $user = User::where('id', '=', $post->users_id)->firstOrFail();
-        return view('blogs/view' , ['post' => $post, 'user'=>$user]);
+        return view('blogs/view' , ['post' => $post]);
     }
     
     /**
-     * save App/Message
+     * save App/BlogPost
      * @param Request $request
      */
     public function save(Request $request){
-         $this->validate($request, [
-        'title' => 'required|max:255',
-        'content' => 'required',
-    ]);
+        $redirect = $this->isAccessable();
+        if ($redirect) {
+            return redirect($redirect);
+        }
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'content' => 'required',
+        ]);
         $id = $request->input('id');
         $user = Auth::user();
         if ($id) {
@@ -62,11 +59,11 @@ class PostsController extends Controller
             
         } else {
             $post = new BlogPost();
-            $post->users_id = $user->id;
+            $post->user_id = $user->id;
         }
         $post->title = $request->input('title');
         $post->content = $request->input('content');
-        $post->update_users_id = $user->id;
+        $post->update_user_id = $user->id;
         $post->save();
         $msg = $id ? "updte blog post" : "save blog post";
         return redirect('blogs')
@@ -75,12 +72,15 @@ class PostsController extends Controller
     }
     
     /**
-     * delete Message record
+     * delete Blog Post record
      * @param string $id
-     * @return type
+     * @return void
      */
     public function delete($id){
-        $this->isAccessable();
+        $redirect = $this->isAccessable();
+        if ($redirect) {
+            return redirect($redirect);
+        }
         $return = BlogPost::where('_id', $id)
                                 ->delete();
         
@@ -90,13 +90,15 @@ class PostsController extends Controller
     }
     
     /**
-     * add Message record
+     * add Blog Post record
      */
     public function add()
     {
-        $this->isAccessable();
+        $redirect = $this->isAccessable();
+        if ($redirect) {
+            return redirect($redirect);
+        }
         $post = (object) array('id'=>'', 'title'=>'', 'content'=>'');
-        
         return view('blogs/edit', ['post' => $post]);
     }
     
@@ -105,7 +107,10 @@ class PostsController extends Controller
      * @param string $id
      */
     public function edit($id){
-        $this->isAccessable();
+        $redirect = $this->isAccessable();
+        if ($redirect) {
+            return redirect($redirect);
+        }
         $post = BlogPost::where('_id', '=', $id)->firstOrFail();
         return view('blogs/edit', ['post' => $post]);
     }
@@ -117,9 +122,10 @@ class PostsController extends Controller
     {
         $user = Auth::user();
         if (!$user){
-            return redirect('/');
-        } elseif ($user->is_admin) {
-            return redirect("/blogs");
+            return '/';
+        } elseif (!$user->hasRole('admin')) {
+            return "/blogs";
         }
+        return '';
     }
 }

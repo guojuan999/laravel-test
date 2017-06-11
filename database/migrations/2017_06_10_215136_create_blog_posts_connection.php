@@ -23,7 +23,7 @@ class CreateBlogPostsConnection extends Migration
         Schema::connection($this->connection)
         ->table('blog_posts', function (Blueprint $collection) 
         {
-            $collection->index('users_id');
+            $collection->index('user_id');
         });
     }
 

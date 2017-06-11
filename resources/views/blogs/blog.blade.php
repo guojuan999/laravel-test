@@ -6,6 +6,7 @@
         {{ session()->get('success') }}
     </div>
 @endif
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -14,7 +15,7 @@
                    <div class="col-md-8">
                     Blogs
                    </div>
-                    @if ($isAdmin)
+                    @if (Auth::user()->hasRole('admin'))
                     <div class="col-md-2"><a href="/blogs/add">Add New</a></div>
                     @endif
                 </div>
@@ -25,7 +26,7 @@
                                 <tr>
                                   <th>Author</th>
                                   <th>Title</th>
-                                  @if ($isAdmin)
+                                  @if (Auth::user()->hasRole('admin'))
                                   <th>Action</th>
                                   @endif
                                 </tr>
@@ -33,12 +34,13 @@
                             <tbody>
                                 @foreach ($posts as $post)
                                 <tr>
-                                    <td><?php echo (isset($users[$post->users_id]) ? $users[$post->users_id]->name: ""); ?></td>
+                                    <?php $user = $post->user()->firstorFail();?>
+                                    <td>{{$user->name}}</td>
                                     <td>
-                                        <a href="/blogs/{{$post->_id}}">{{$post->title}}</a>
+                                        <a href="/blogs/{{$post->getId()}}">{{$post->getTitle()}}</a>
                                     </td>
-                                    @if ($isAdmin)
-                                    <td><a class="btn-link" href="/blogs/delete/{{$post->_id}}">Delete</a>&nbsp;&nbsp;<a class="btn-link" href="/blogs/edit/{{$post->_id}}">Edit</a></td>
+                                    @if (Auth::user()->hasRole('admin'))
+                                    <td><a class="btn-link" href="/blogs/delete/{{$post->getId()}}">Delete</a>&nbsp;&nbsp;<a class="btn-link" href="/blogs/edit/{{$post->getId()}}">Edit</a></td>
                                     @endif
                                 </tr>
                                 @endforeach

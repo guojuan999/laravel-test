@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->boolean('is_admin')->default(0);
+            $table->string('role')->default('user');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -28,7 +28,7 @@ class CreateUsersTable extends Migration
                 'name'     => 'Juan',
                 'email'    => 'juan@gmail.com',
                 'password' => bcrypt("test1234"),
-                'is_admin' => 1
+                'role'     => "admin"
             )
         );
         DB::table('users')->insert(
@@ -36,7 +36,7 @@ class CreateUsersTable extends Migration
                 'name'     => 'Test',
                 'email'    => 'test@test.com',
                 'password' => bcrypt("test1234"),
-                'is_admin' => 0
+                'role'     => "user"
             )
         );
     }
