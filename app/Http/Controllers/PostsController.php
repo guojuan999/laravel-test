@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Auth;
 class PostsController extends Controller
 {
     /**
-     * pagingation per page for displaying blogs 
+     * pagingation per page for displaying blogs
      */
-    const pageLimit = 5;
+    const pagelimit = 5;
     
     /**
      * get all App/BlogPost by pagination
@@ -19,11 +19,11 @@ class PostsController extends Controller
      */
     public function getBlogs()
     {
-        if(!Auth::check()) {
+        if (!Auth::check()) {
             return redirect('/');
         }
-        $posts = BlogPost::orderBy('created_at', 'desc')->paginate(self::pageLimit);
-        return view('blogs/blog' , ['posts' => $posts]);
+        $posts = BlogPost::orderBy('created_at', 'desc')->paginate(self::pagelimit);
+        return view('blogs/blog', ['posts' => $posts]);
     }
     
     /**
@@ -32,18 +32,19 @@ class PostsController extends Controller
      */
     public function getBlogById($id)
     {
-        if(!Auth::check()) {
+        if (!Auth::check()) {
             return redirect('/');
         }
         $post = BlogPost::where('_id', '=', $id)->firstOrFail();
-        return view('blogs/view' , ['post' => $post]);
+        return view('blogs/view', ['post' => $post]);
     }
     
     /**
      * save App/BlogPost
      * @param Request $request
      */
-    public function save(Request $request){
+    public function save(Request $request)
+    {
         $redirect = $this->isAccessable();
         if ($redirect) {
             return redirect($redirect);
@@ -67,7 +68,7 @@ class PostsController extends Controller
         $post->save();
         $msg = $id ? "updte blog post" : "save blog post";
         return redirect('blogs')
-                ->with('success','You have been successfully '.$msg);
+                ->with('success', 'You have been successfully '.$msg);
 
     }
     
@@ -76,7 +77,8 @@ class PostsController extends Controller
      * @param string $id
      * @return void
      */
-    public function delete($id){
+    public function delete($id)
+    {
         $redirect = $this->isAccessable();
         if ($redirect) {
             return redirect($redirect);
@@ -85,7 +87,7 @@ class PostsController extends Controller
                                 ->delete();
         
         return redirect('blogs')
-                ->with('success','You have been successfully deleted blog post');
+                ->with('success', 'You have been successfully deleted blog post');
 
     }
     
@@ -106,7 +108,8 @@ class PostsController extends Controller
      * edit App/Message by id
      * @param string $id
      */
-    public function edit($id){
+    public function edit($id)
+    {
         $redirect = $this->isAccessable();
         if ($redirect) {
             return redirect($redirect);
@@ -121,7 +124,7 @@ class PostsController extends Controller
     private function isAccessable()
     {
         $user = Auth::user();
-        if (!$user){
+        if (!$user) {
             return '/';
         } elseif (!$user->hasRole('admin')) {
             return "/blogs";

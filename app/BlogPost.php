@@ -46,7 +46,8 @@ class BlogPost extends Eloquent
      * set blog post content
      * @param string $content
      */
-    public function setContent($value) {
+    public function setContent($value)
+    {
         $this->attributes['content'] = $value;
     }
     
@@ -54,7 +55,8 @@ class BlogPost extends Eloquent
      * set blog post content
      * @return string
      */
-    public function getContent() {
+    public function getContent()
+    {
         return $this->attributes['content'];
     }
     
