@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\BlogPost;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class PostsController extends Controller
 {
@@ -35,7 +36,12 @@ class PostsController extends Controller
         if (!Auth::check()) {
             return redirect('/');
         }
-        $post = BlogPost::where('_id', '=', $id)->firstOrFail();
+        if (Cache::has($id)) {
+            $post = Cache::get($id);
+        } else {
+            $post = BlogPost::where('_id', '=', $id)->firstOrFail();
+            Cache::put($id, $post, 10);
+        }
         return view('blogs/view', ['post' => $post]);
     }
     
