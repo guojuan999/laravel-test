@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\BlogPost;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Requests\BlogPostRequest;
 
 class PostsController extends Controller
 {
@@ -49,16 +50,13 @@ class PostsController extends Controller
      * save App/BlogPost
      * @param Request $request
      */
-    public function save(Request $request)
+    public function save(BlogPostRequest $request)
     {
         $redirect = $this->isAccessable();
         if ($redirect) {
             return redirect($redirect);
         }
-        $this->validate($request, [
-            'title' => 'required|max:255',
-            'content' => 'required',
-        ]);
+        
         $id = $request->input('id');
         $user = Auth::user();
         if ($id) {
