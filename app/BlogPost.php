@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
@@ -9,14 +8,12 @@ use App\User;
 class BlogPost extends Eloquent
 {
     use HybridRelations;
-    
     /**
      * The name of the database connection to use.
+     * 
      * @var string
-    ]*/
+     */
     protected $connection = 'mongodb';
-    
-    
     
     public function getId()
     {
@@ -24,8 +21,9 @@ class BlogPost extends Eloquent
     }
     /**
      * Set the blog post title.
-     *
-     * @param  string  $value
+     * 
+     * @param string $value
+     * 
      * @return void
      */
     public function setTitle($value)
@@ -34,7 +32,8 @@ class BlogPost extends Eloquent
     }
     
     /**
-     * return the blog post title
+     * Return the blog post title
+     * 
      * @return string
      */
     public function getTitle()
@@ -43,8 +42,11 @@ class BlogPost extends Eloquent
     }
     
     /**
-     * set blog post content
-     * @param string $content
+     * Set blog post content
+     * 
+     * @param string $value
+     * 
+     * @return void
      */
     public function setContent($value)
     {
@@ -52,7 +54,8 @@ class BlogPost extends Eloquent
     }
     
     /**
-     * set blog post content
+     * Set blog post content
+     * 
      * @return string
      */
     public function getContent()
@@ -60,7 +63,11 @@ class BlogPost extends Eloquent
         return $this->attributes['content'];
     }
     
-    
+    /**
+     * Get User
+     * 
+     * @return App\User
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
