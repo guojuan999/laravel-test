@@ -15,15 +15,17 @@ class PostsController extends Controller
      */
     const pagelimit = 5;
     
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * get all App/BlogPost by pagination
      * @param int $page
      */
     public function getBlogs()
     {
-        if (!Auth::check()) {
-            return redirect('/');
-        }
         $posts = BlogPost::orderBy('created_at', 'desc')->paginate(self::pagelimit);
         return view('blogs/blog', ['posts' => $posts]);
     }
@@ -34,9 +36,6 @@ class PostsController extends Controller
      */
     public function getBlogById($id)
     {
-        if (!Auth::check()) {
-            return redirect('/');
-        }
         if (Cache::has($id)) {
             $post = Cache::get($id);
         } else {
@@ -127,10 +126,7 @@ class PostsController extends Controller
      */
     private function isAccessable()
     {
-        $user = Auth::user();
-        if (!$user) {
-            return '/';
-        } elseif (!$user->hasRole('admin')) {
+        if (!$user->hasRole('admin')) {
             return "/blogs";
         }
         return '';

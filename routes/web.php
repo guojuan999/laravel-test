@@ -28,4 +28,4 @@ Route::post('blogs/save/', ['uses' => 'PostsController@save', 'as' => 'route_upd
 Route::get('blogs/delete/{id}', ['uses' => 'PostsController@delete', 'as' => 'route_delete']);
 
 Route::get('blogs/add/', ['uses' => 'PostsController@add', 'as' => 'route_save']);
-
+Route::get("now", function() {return date("y-m-d H:i:s");});
